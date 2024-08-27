@@ -1,8 +1,4 @@
-// window.addEventListener("load", function () {
-    // if ("serviceWorker" in navigator) {
-      // navigator.serviceWorker.register("ServiceWorker.js");
-    // }
-  // });
+
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -36,17 +32,18 @@
   }
 
   var buildUrl = "Build";
-  var loaderUrl = buildUrl + "/WebPlay.loader.js";
+  var loaderUrl = buildUrl + "/WebGL.loader.js";
   var config = {
-    dataUrl: buildUrl + "/WebPlay.data.unityweb",
-    frameworkUrl: buildUrl + "/WebPlay.framework.js.unityweb",
-    codeUrl: buildUrl + "/WebPlay.wasm.unityweb",
+    dataUrl: buildUrl + "/WebGL.data.unityweb",
+    frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
+    codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "NGen",
-    productName: "CatB",
-    productVersion: "1.0",
+    companyName: "CatB",
+    productName: "Cat Battle",
+    productVersion: "1.0.10.1",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
+  //return "immutable";
      return "no-store";
    },
   };
@@ -60,13 +57,15 @@
 
   render();
 
+  canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
 
   var script = document.createElement("script");
   script.src = loaderUrl;
   script.onload = () => {
     createUnityInstance(canvas, config, (progress) => {
-      progressBarFull.style.width = 100 * progress + "%";
+      //progressBarFull.style.width = 100 * progress + "%";
+	  setPercentage(100 * progress);
     }).then((unityInstance) => {
       unityInstanceRef = unityInstance;
       loadingBar.style.display = "none";
@@ -112,3 +111,114 @@
 	}
 
 	window.addEventListener('resize', resizeCanvas);
+
+
+const progressContainer = document.querySelector('.progress-container');
+
+function setPercentage(pecent) {
+  const percentage = pecent
+  + '%';
+  
+  const progressEl = progressContainer.querySelector('.progress');
+  //const percentageEl = progressContainer.querySelector('.percentage');
+  
+  progressEl.style.width = percentage;
+  //percentageEl.innerText = percentage;
+  //percentageEl.style.left = percentage;
+}
+
+
+// Caching control
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('ServiceWorker.js')
+        .then(function(registration) {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
+            registration.addEventListener('updatefound', function() {
+                const newWorker = registration.installing;
+
+                newWorker.addEventListener('statechange', function() {
+                    if (newWorker.state === 'installed') {
+                        if (navigator.serviceWorker.controller) {
+                            // New content is available, inform the user
+                            notifyUserAboutUpdate();
+							//console.log('ServiceWorker Update!!!');
+							//ForceReload();
+                        }
+                    }
+                });
+            });
+        }).catch(function(error) {
+            console.log('ServiceWorker registration failed: ', error);
+        });
+
+    // Listening for messages from the Service Worker
+    navigator.serviceWorker.addEventListener('message', function(event) {
+        if (event.data === 'newVersionAvailable') {
+            notifyUserAboutUpdate();
+			//console.log('ServiceWorker Update 1!!!');
+			//ForceReload();
+        }
+    });
+}
+
+function notifyUserAboutUpdate() {
+    alertAndForceUserAboutUpdate();
+}
+
+function notifyUserAboutUpdateByClickButton() {
+	// Show a custom update message to the user
+    const updateMessage = document.createElement('div');
+    
+    //updateMessage.innerText = 'New version available. Click to update!';
+    updateMessage.style.position = 'fixed';
+    updateMessage.style.bottom = '0';
+    updateMessage.style.width = '100%';
+    updateMessage.style.height = '100%';
+    updateMessage.style.backgroundColor = 'transparent';
+    updateMessage.style.textAlign = 'center';
+    //updateMessage.style.color = '#FFFFFF';
+    updateMessage.style.fontSize = '23px';
+    updateMessage.style.padding = '10px';
+    updateMessage.style.zIndex = '1000';
+	document.body.appendChild(updateMessage);
+	
+	const popMessage = document.createElement('div');
+	popMessage.innerText = 'New version available. Click to update!';
+    popMessage.style.position = 'fixed';
+    popMessage.style.bottom = '0';
+    popMessage.style.width = '100%';
+    popMessage.style.backgroundColor = '#29f051';
+    popMessage.style.textAlign = 'center';
+    popMessage.style.color = '#FFFFFF';
+    popMessage.style.fontSize = '20px';
+    popMessage.style.padding = '10px';
+    popMessage.style.zIndex = '1000';
+	
+	updateMessage.appendChild(popMessage);
+	
+    
+
+    updateMessage.addEventListener('click', () => {
+        ForceReload();
+      //alert('The application has been updated. Please clear your browser cache to ensure you have the latest version.');
+    });
+	
+}
+
+function alertAndForceUserAboutUpdate() {
+	alert("New version available. Press OK to update!");
+    ForceReload();
+	
+}
+
+function ForceReload()
+{
+	//console.log('ServiceWorker Update 2!!!');
+	if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage('skipWaiting');
+        }
+		
+		window.location.reload();
+		//alert('The application has been updated. Please clear your browser cache to ensure you have the latest version.');
+}
