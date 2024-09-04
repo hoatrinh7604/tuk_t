@@ -40,7 +40,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.10.20",
+    productVersion: "1.0.9.1",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -238,7 +238,7 @@ function sendTelegramPayment(botToken, providerToken, chatId, amount, currency) 
         description: 'Purchase 100 Stars to use in the app',
         payload: payload,
         provider_token: providerToken,
-        start_parameter: 'get_100_stars',
+        //start_parameter: 'get_100_stars',
         currency: currency,
         prices: [
             { label: '100 Stars', amount: amount }  // Define the item and its price
@@ -264,4 +264,40 @@ function sendTelegramPayment(botToken, providerToken, chatId, amount, currency) 
     .catch(error => {
         console.error('Error sending payment:', error);
     });
+}
+
+function openInvoice()
+{
+	// Define your invoice parameters
+	const invoiceParams = {
+		chat_id: window.Telegram.WebApp.initDataUnsafe.user.id, // User ID
+		provider_token: "", // Replace with your payment provider token
+		start_parameter: "test_invoice", // A unique parameter for this invoice
+		title: "Premium Subscription", // Title of the invoice
+		description: "Subscribe to our premium service for exclusive features.", // Description
+		currency: "XTR", // Currency code (e.g., USD)
+		prices: [
+			{ label: "1 Month", amount: 1 }, // Amount is in the smallest currency unit (e.g., cents)
+		],
+		payload: "unique_payload_identifier", // A unique identifier for this payment
+		provider_data: JSON.stringify({}), // Optional additional provider data
+		photo_url: "https://example.com/product.jpg", // Optional image for the product
+		photo_size: 512, // Optional image size
+		photo_width: 512, // Optional image width
+		photo_height: 512, // Optional image height
+		need_name: true, // Optional request for the user's name
+		need_phone_number: false, // Optional request for the user's phone number
+		need_email: false, // Optional request for the user's email
+		need_shipping_address: false, // Optional request for the user's shipping address
+		send_phone_number_to_provider: false, // Optional send phone number to provider
+		send_email_to_provider: false, // Optional send email to provider
+		is_flexible: false // Optional if the final price depends on the shipping method
+	};
+
+	// Open the invoice
+	window.Telegram.WebApp.openInvoice(invoiceParams).then(result => {
+		console.log("Payment result:", result);
+	}).catch(error => {
+		console.error("Payment error:", error);
+	});
 }
