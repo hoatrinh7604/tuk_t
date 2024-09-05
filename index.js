@@ -40,7 +40,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.9.2",
+    productVersion: "1.0.9.3",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -295,7 +295,7 @@ function openInvoice()
 	};
 
 	// Open the invoice
-	window.Telegram.WebApp.openInvoice(invoiceParams).then(result => {
+	window.Telegram.WebApp.openInvoice("https://t.me/$avduU97kyFbcAAAAeeeQejTUkZA").then(result => {
 		console.log("Payment result:", result);
 	}).catch(error => {
 		console.error("Payment error:", error);
