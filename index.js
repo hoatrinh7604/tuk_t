@@ -40,7 +40,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.9.3",
+    productVersion: "1.0.9.4",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -266,36 +266,10 @@ function sendTelegramPayment(botToken, providerToken, chatId, amount, currency) 
     });
 }
 
-function openInvoice()
+function openInvoice(invoice_url)
 {
-	// Define your invoice parameters
-	const invoiceParams = {
-		chat_id: window.Telegram.WebApp.initDataUnsafe.user.id, // User ID
-		provider_token: "", // Replace with your payment provider token
-		start_parameter: "test_invoice", // A unique parameter for this invoice
-		title: "Premium Subscription", // Title of the invoice
-		description: "Subscribe to our premium service for exclusive features.", // Description
-		currency: "XTR", // Currency code (e.g., USD)
-		prices: [
-			{ label: "1 Month", amount: 1 }, // Amount is in the smallest currency unit (e.g., cents)
-		],
-		payload: "unique_payload_identifier", // A unique identifier for this payment
-		provider_data: JSON.stringify({}), // Optional additional provider data
-		photo_url: "https://example.com/product.jpg", // Optional image for the product
-		photo_size: 512, // Optional image size
-		photo_width: 512, // Optional image width
-		photo_height: 512, // Optional image height
-		need_name: true, // Optional request for the user's name
-		need_phone_number: false, // Optional request for the user's phone number
-		need_email: false, // Optional request for the user's email
-		need_shipping_address: false, // Optional request for the user's shipping address
-		send_phone_number_to_provider: false, // Optional send phone number to provider
-		send_email_to_provider: false, // Optional send email to provider
-		is_flexible: false // Optional if the final price depends on the shipping method
-	};
-
 	// Open the invoice
-	window.Telegram.WebApp.openInvoice("https://t.me/$avduU97kyFbcAAAAeeeQejTUkZA").then(result => {
+	window.Telegram.WebApp.openInvoice(invoice_url).then(result => {
 		console.log("Payment result:", result);
 	}).catch(error => {
 		console.error("Payment error:", error);
