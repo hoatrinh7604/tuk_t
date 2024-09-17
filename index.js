@@ -38,9 +38,9 @@
     frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
     codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "CatB",
-    productName: "Cat Battle",
-    productVersion: "1.0.9.6",
+    companyName: "Cat Lucky",
+    productName: "CatLucky",
+    productVersion: "1.0.0",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -266,6 +266,13 @@ function sendTelegramPayment(botToken, providerToken, chatId, amount, currency) 
     });
 }
 
+function getLaunchParams()
+{
+	var launchParams = JSON.stringify(window.Telegram.WebApp);
+	//console.log('launchParams = ', launchParams);
+	return launchParams;
+}
+
 function openInvoice(invoice_url)
 {
 	// Open the invoice
@@ -276,5 +283,19 @@ window.Telegram.WebView.onEvent('invoice_closed', onInvoiceCloseCustom);
 
 function onInvoiceCloseCustom(eventType, eventData)
 {
-	console.log("TUK:::" + JSON.stringify(eventData));
+	console.log("T-", JSON.stringify(eventData));
+	if(unityInstanceRef != null)
+	{
+		if(eventData.status == "paid")
+		{
+			unityInstanceRef.SendMessage("GameElement", "OnPurchaseSuccess", JSON.stringify(eventData)); 
+		}
+	}
+}
+
+function isSupportStarPurchase()
+{
+	if(Telegram && Telegram.WebApp.isVersionAtLeast('6.1'))
+		return true;
+	return false;
 }
