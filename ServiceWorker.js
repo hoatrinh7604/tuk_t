@@ -1,4 +1,4 @@
-const cacheName = "Cat Lucky-CatLucky-1.0.0";
+const cacheName = "Cat Lucky-CatLucky-1.0.1.2";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -24,7 +24,7 @@ const contentToCache = [
 
 self.addEventListener("install", function (e) {
   console.log("[Service Worker] Install cacheName=" + cacheName);
-  //self.skipWaiting();  // Activate worker immediately
+  self.skipWaiting();  // Activate worker immediately
   e.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
