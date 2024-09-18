@@ -1,4 +1,4 @@
-const cacheName = "Cat Lucky-CatLucky-1.0.0.5";
+const cacheName = "Cat Lucky-CatLucky-1.0.0.6";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -109,7 +109,7 @@ self.addEventListener("fetch", function (event) {
   // );
   
   //new
-  if(event.request.url.includes("https://api.playshub.io") 
+  if(event.request.url.includes("https://api.playshub.io")) 
   {
 	  return null;
   }
