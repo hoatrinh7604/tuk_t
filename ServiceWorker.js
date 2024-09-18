@@ -1,4 +1,4 @@
-const cacheName = "Cat Lucky-CatLucky-1.0.0.3";
+const cacheName = "Cat Lucky-CatLucky-1.0.0.4";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -111,20 +111,20 @@ self.addEventListener("fetch", function (event) {
   //new
   if (event.request.method === 'POST') {
     // Always fetch from the network for POST requests
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          // Return the response directly from the network
-          return response;
-        })
-        .catch(error => {
-          // Handle network errors (e.g., show an error page)
-          return new Response('Network error occurred', {
-            status: 500,
-            statusText: 'Network Error'
-          });
-        })
-    );
+    // event.respondWith(
+      // fetch(event.request)
+        // .then(response => {
+          // // Return the response directly from the network
+          // return response;
+        // })
+        // .catch(error => {
+          // // Handle network errors (e.g., show an error page)
+          // return new Response('Network error occurred', {
+            // status: 500,
+            // statusText: 'Network Error'
+          // });
+        // })
+    // );
   } else {
     // Handle other types of requests (GET, PUT, etc.) as needed
     event.respondWith(
