@@ -12,29 +12,36 @@
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-ton-sdk@1.1.6"></script> -->
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-evm-sdk@1.0.0"></script> -->
 	<script>
-    function rotateCanvasIfLandscape() {
-        var canvas = document.getElementById('unity-container');
-        if (window.innerHeight < window.innerWidth) {
-            // Device is in portrait mode, rotate canvas
-            canvas.style.transform = "rotate(90deg)";
-            canvas.style.width = window.innerHeight + "px";
-            canvas.style.height = window.innerWidth + "px";
-            canvas.style.marginTop = (window.innerHeight - window.innerWidth) / 2 + "px";
-        } else {
-            // Device is in landscape mode, reset canvas
-            canvas.style.transform = "rotate(0deg)";
-            canvas.style.width = "100%";
-            canvas.style.height = "100%";
-            canvas.style.marginTop = "0px";
+        function rotateCanvasIfPortrait() {
+            var canvas = document.getElementById('unity-container');
+            var rotateMessage = document.getElementById('rotateMessage');
+
+            if (window.innerHeight > window.innerWidth) {
+                // Device is in portrait mode, rotate canvas and show message
+                canvas.style.transform = "rotate(90deg)";
+                canvas.style.width = window.innerHeight + "px";
+                canvas.style.height = window.innerWidth + "px";
+                canvas.style.marginTop = (window.innerHeight - window.innerWidth) / 2 + "px";
+                canvas.style.marginLeft = (window.innerWidth - window.innerHeight) / 2 + "px";
+                rotateMessage.style.display = 'block';
+            } else {
+                // Device is in landscape mode, reset canvas and hide message
+                canvas.style.transform = "rotate(0deg)";
+                canvas.style.width = "100%";
+                canvas.style.height = "100%";
+                canvas.style.marginTop = "0px";
+                canvas.style.marginLeft = "0px";
+                rotateMessage.style.display = 'none';
+            }
         }
-    }
 
-    window.addEventListener("resize", rotateCanvasIfLandscape);
-    window.addEventListener("orientationchange", rotateCanvasIfLandscape);
+        // Add event listeners for resizing or changing orientation
+        window.addEventListener("resize", rotateCanvasIfPortrait);
+        window.addEventListener("orientationchange", rotateCanvasIfPortrait);
 
-    // Initial check
-    rotateCanvasIfPortrait();
-	</script>
+        // Initial check
+        rotateCanvasIfPortrait();
+  </head>
   </head>
   <body>
     <div id="unity-container">
