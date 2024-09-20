@@ -12,18 +12,28 @@
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-ton-sdk@1.1.6"></script> -->
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-evm-sdk@1.0.0"></script> -->
 	<script>
-    if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock('portrait')
-            .then(function() {
-                console.log("Orientation locked to portrait");
-            })
-            .catch(function(error) {
-                console.log("Failed to lock the orientation: " + error);
-            });
-    } else if (window.screen && window.screen.lockOrientation) {
-        // Older API compatibility
-        window.screen.lockOrientation('portrait');
+    function rotateCanvasIfLandscape() {
+        var canvas = document.getElementById('unity-container');
+        if (window.innerHeight < window.innerWidth) {
+            // Device is in portrait mode, rotate canvas
+            canvas.style.transform = "rotate(90deg)";
+            canvas.style.width = window.innerHeight + "px";
+            canvas.style.height = window.innerWidth + "px";
+            canvas.style.marginTop = (window.innerHeight - window.innerWidth) / 2 + "px";
+        } else {
+            // Device is in landscape mode, reset canvas
+            canvas.style.transform = "rotate(0deg)";
+            canvas.style.width = "100%";
+            canvas.style.height = "100%";
+            canvas.style.marginTop = "0px";
+        }
     }
+
+    window.addEventListener("resize", rotateCanvasIfLandscape);
+    window.addEventListener("orientationchange", rotateCanvasIfLandscape);
+
+    // Initial check
+    rotateCanvasIfPortrait();
 	</script>
   </head>
   <body>
