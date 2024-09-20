@@ -12,17 +12,18 @@
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-ton-sdk@1.1.6"></script> -->
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-evm-sdk@1.0.0"></script> -->
 	<script>
-    // Lock the orientation to portrait
-    function lockOrientation() {
-        if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('portrait').catch(function(error) {
-                //console.log("Orientation lock failed: ", error);
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('portrait')
+            .then(function() {
+                console.log("Orientation locked to portrait");
+            })
+            .catch(function(error) {
+                console.log("Failed to lock the orientation: " + error);
             });
-        }
+    } else if (window.screen && window.screen.lockOrientation) {
+        // Older API compatibility
+        window.screen.lockOrientation('portrait');
     }
-
-    // Call the function when the page loads
-    window.onload = lockOrientation;
 	</script>
   </head>
   <body>
