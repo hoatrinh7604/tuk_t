@@ -11,6 +11,19 @@
 	<script src="https://cdn.jsdelivr.net/gh/TONSolutions/telemetree-pixel@main/telemetree-pixel.js"></script>
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-ton-sdk@1.1.6"></script> -->
 	<!-- <script src="https://unpkg.com/@cuonghx.ngen/cat-battle-evm-sdk@1.0.0"></script> -->
+	<script>
+    // Lock the orientation to portrait
+    function lockOrientation() {
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('portrait').catch(function(error) {
+                //console.log("Orientation lock failed: ", error);
+            });
+        }
+    }
+
+    // Call the function when the page loads
+    window.onload = lockOrientation;
+	</script>
   </head>
   <body>
     <div id="unity-container">

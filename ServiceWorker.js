@@ -1,4 +1,4 @@
-const cacheName = "Cat Lucky-CatLucky-1.0.0.19";
+const cacheName = "Cat Lucky-CatLucky-1.0.0.20";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -108,8 +108,8 @@ self.addEventListener("fetch", function (event) {
     // })()
   // );
   
-  //new
-  if(event.request.url.includes("https://api.playshub.io")) 
+  // Only cache if it is game content data
+  if (!isStaticResource(event.request))
   {
 	  return null;
   }
@@ -156,6 +156,11 @@ self.addEventListener('message', function(event) {
         self.skipWaiting();
     }
 });
+
+// Helper function to check if the request is for static resources
+function isStaticResource(request) {
+  return contentToCache.some((resource) => request.url.includes(resource));
+}
 
 // Inform clients about the new version
 // self.addEventListener('activate', event => {
