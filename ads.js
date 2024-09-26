@@ -1,5 +1,5 @@
 
-  function showBanner(string type)
+  function showBanner(type)
   {
 	  var data = JSON.parse(type);
 	  console.log("TUK data" + data.blockId);
