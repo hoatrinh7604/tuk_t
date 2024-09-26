@@ -1,6 +1,9 @@
 
-  function showBanner()
+  function showBanner(string type)
   {
+	  var data = JSON.parse(type);
+	  console.log("TUK data" + data.blockId);
+	  console.log("TUK data type" + data.type);
 	  const BannerAdController = window.Adsgram.init({ blockId: "3491" });
 	  if(BannerAdController)
 	  {
@@ -15,6 +18,7 @@
 				// user get error during playing ad or skip ad
 				// do nothing or whatever you want
 				console.log("TUK false:" + result);
+				SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
 		  })
 	  }
   }
