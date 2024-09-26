@@ -1,4 +1,4 @@
-const cacheName = "Cat Lucky-CatLucky-1.0.1.5";
+const cacheName = "CatB-Cat Battle-1.0.12.6";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -8,6 +8,8 @@ const contentToCache = [
     "index.js",
 	"index.html",
     "load-sdk.js",
+    "tracking.js",
+    "ads.js",
 ];
 
 // self.addEventListener('install', function(event) {
@@ -24,7 +26,7 @@ const contentToCache = [
 
 self.addEventListener("install", function (e) {
   console.log("[Service Worker] Install cacheName=" + cacheName);
-  self.skipWaiting();  // Activate worker immediately
+  //self.skipWaiting();  // Activate worker immediately
   e.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -114,6 +116,7 @@ self.addEventListener("fetch", function (event) {
 	  return null;
   }
   
+  //new
   if (event.request.method === 'POST') {
     // Always fetch from the network for POST requests
     event.respondWith(
@@ -161,7 +164,6 @@ self.addEventListener('message', function(event) {
 function isStaticResource(request) {
   return contentToCache.some((resource) => request.url.includes(resource));
 }
-
 // Inform clients about the new version
 // self.addEventListener('activate', event => {
     // event.waitUntil(
