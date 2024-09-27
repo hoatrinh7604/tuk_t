@@ -345,7 +345,7 @@ function onInvoiceCloseCustom(eventType, eventData)
 
 function isSupportStarPurchase()
 {
-	if(Telegram && Telegram.WebApp.isVersionAtLeast('6.1'))
+	//if(Telegram && Telegram.WebApp.isVersionAtLeast('6.1'))
 		return true;
-	return false;
+	//return false;
 }
