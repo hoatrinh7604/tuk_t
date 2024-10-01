@@ -91,9 +91,9 @@
     frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
     codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "CatB",
-    productName: "Cat Battle",
-    productVersion: "1.0.13.19",
+    companyName: "Cat Lucky",
+    productName: "CatLucky",
+    productVersion: "1.0.1.6",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -321,6 +321,13 @@ function sendTelegramPayment(botToken, providerToken, chatId, amount, currency) 
     .catch(error => {
         console.error('Error sending payment:', error);
     });
+}
+
+function getLaunchParams()
+{
+	var launchParams = JSON.stringify(window.Telegram.WebApp);
+	//console.log('launchParams = ', launchParams);
+	return launchParams;
 }
 
 function openInvoice(invoice_url)

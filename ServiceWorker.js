@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.0.13.19";
+const cacheName = "Cat Lucky-CatLucky-1.0.1.6";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -8,8 +8,6 @@ const contentToCache = [
     "index.js",
 	"index.html",
     "load-sdk.js",
-    "ads.js",
-    "tracking.js"
 ];
 
 // self.addEventListener('install', function(event) {
@@ -116,7 +114,6 @@ self.addEventListener("fetch", function (event) {
 	  return null;
   }
   
-  //new
   if (event.request.method === 'POST') {
     // Always fetch from the network for POST requests
     event.respondWith(
@@ -164,6 +161,7 @@ self.addEventListener('message', function(event) {
 function isStaticResource(request) {
   return contentToCache.some((resource) => request.url.includes(resource));
 }
+
 // Inform clients about the new version
 // self.addEventListener('activate', event => {
     // event.waitUntil(
