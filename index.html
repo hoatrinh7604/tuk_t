@@ -30,14 +30,13 @@
       </div>
       <div id="unity-warning"> </div>
     </div>
-	
 	<script> 
-	var version = "1.0.1.8"; // Define the version
+	var version = "1.0.1.9"; // Define the version
     var script = document.createElement('script');
     script.src = "index.js?v=" + version; // Append version to the script src
     document.body.appendChild(script); // Add the script to the body
 	</script>
-    <!-- <script src="index.js?v=" + "1.0.1.8"></script> -->
+    <!-- <script src="index.js?v=" + "1.0.1.9"></script> -->
     
 	<!-- <script src="load-sdk.js"></script> -->
 	<!-- <script src="tracking.js"></script> -->
@@ -48,20 +47,6 @@
 		  appName: "Plays Hub",
 		  isTelegramContext: false, // use false, if a website is not in Telegram Web App context
 	  });
-	</script>
-	<script>
-	const button = document.getElementById('ad');
-            button.addEventListener('click', () => {
-                AdController.show().then((result) => {
-                    // user watch ad till the end
-                    // your code to reward user
-                    alert('Reward');
-                }).catch((result) => {
-                    // user skipped video or get error during playing ad
-                    // do nothing or whatever you want
-                    alert(JSON.stringify(result, null, 4));
-                })
-            })
 	</script>
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PCVJ0R9PRF"></script>

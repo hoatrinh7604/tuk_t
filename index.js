@@ -93,7 +93,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "Cat Lucky",
     productName: "CatLucky",
-    productVersion: "1.0.1.8",
+    productVersion: "1.0.1.9",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -371,6 +371,7 @@ const AdController = window.Adsgram.init({ blockId: "3705" });
 
 function showADMega(type)
 {
+	var data = JSON.parse(type);
 	if(AdController != null)
 	{
 		AdController.show().then((result) => {
