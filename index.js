@@ -93,7 +93,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "Cat Lucky",
     productName: "CatLucky",
-    productVersion: "1.0.1.9",
+    productVersion: "1.0.1.11",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -411,6 +411,7 @@ function showADBanner(type)
 			// your code to reward user
 			//console.log("ADr" + result);
 			telemetreeTrackingStr("ADGram-Success|" + data.type);
+			console.log("AD Completed: " + JSON.stringify(result));
 			if(unityInstanceRef)
 			{
 				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
@@ -418,7 +419,7 @@ function showADBanner(type)
 			}).catch((result) => {
 				// user get error during playing ad or skip ad
 				// do nothing or whatever you want
-				console.log("TUK false:" + result);
+				console.log("AD Failed: " + JSON.stringify(result));
 				if(unityInstanceRef)
 				{
 					unityInstanceRef.SendMessage("MegaADHandler", "OnLoadFail", JSON.stringify(data.type));
@@ -440,6 +441,7 @@ function showADBanner(type)
 			// your code to reward user
 			//console.log("ADr" + result);
 			telemetreeTrackingStr("ADGram-Success|" + data.type);
+			console.log("AD Completed: " + JSON.stringify(result));
 			if(unityInstanceRef)
 			{
 				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
@@ -447,7 +449,7 @@ function showADBanner(type)
 			}).catch((result) => {
 				// user get error during playing ad or skip ad
 				// do nothing or whatever you want
-				console.log("AD false:" + result);
+				console.log("AD Failed: " + JSON.stringify(result));
 				if(unityInstanceRef)
 				{
 					unityInstanceRef.SendMessage("MegaADHandler", "OnLoadFail", JSON.stringify(data.type));
