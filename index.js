@@ -93,7 +93,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "Cat Lucky",
     productName: "CatLucky",
-    productVersion: "1.0.1.6",
+    productVersion: "1.0.1.8",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -367,6 +367,36 @@ function isSupportStarPurchase()
 }
 
 // Ads
+const AdController = window.Adsgram.init({ blockId: "3705" });
+
+function showADMega(type)
+{
+	if(AdController != null)
+	{
+		AdController.show().then((result) => {
+			// user watch ad till the end
+			// your code to reward user
+			console.log("AD Completed: " + JSON.stringify(result));
+			if(unityInstanceRef)
+			{
+				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
+			}
+		}).catch((result) => {
+			// user get error during playing ad or skip ad
+			// do nothing or whatever you want
+			console.log("AD Failed: " + JSON.stringify(result));
+			if(unityInstanceRef)
+				{
+					unityInstanceRef.SendMessage("MegaADHandler", "OnLoadFail", JSON.stringify(data.type));
+				}
+		})
+	}
+	else
+	{
+		console.log("AD Failed!!!");
+	}
+}
+
 function showADBanner(type)
   {
 	  var data = JSON.parse(type);
