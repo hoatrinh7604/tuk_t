@@ -367,7 +367,7 @@ function isSupportStarPurchase()
 }
 
 // Ads
-const AdController = window.Adsgram.init({ blockId: "3705" });
+const AdController = window.Adsgram.init({ blockId: "3932" });
 
 function showADMega(type)
 {

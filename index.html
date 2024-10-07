@@ -51,10 +51,10 @@
 	<button id="ad">Show ad</button>
         <script>
             // insert your block id
-            const AdController = window.Adsgram.init({ blockId: "3931" });
+            const AdControllerButton = window.Adsgram.init({ blockId: "3931" });
             const button = document.getElementById('ad');
             button.addEventListener('click', () => {
-                AdController.show().then((result) => {
+                AdControllerButton.show().then((result) => {
                     // user watch ad till the end
                     // your code to reward user
                     alert('Reward');
