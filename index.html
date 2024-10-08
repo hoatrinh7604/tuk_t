@@ -14,9 +14,40 @@
 	<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   </head>
   <body>
-  <div style="z-index: 3">
-	<button id="ad" >Show ad</button>
-	</div>
+  <script>
+            // insert your block id
+            const AdController = window.Adsgram.init({ blockId: "3931" });
+            const button = document.getElementById('ad');
+            button.addEventListener('click', () => {
+                AdController.show().then((result) => {
+                    // user watch ad till the end
+                    // your code to reward user
+					console.log("AD Completed: " + JSON.stringify(result));
+                    alert('Reward');
+                }).catch((result) => {
+                    // user skipped video or get error during playing ad
+                    // do nothing or whatever you want
+					console.log("AD Fail: " + JSON.stringify(result));
+                    alert(JSON.stringify(result, null, 4));
+                })
+            })
+			
+			function fixedAD(data)
+			{
+				var info = JSON.parse(data);
+				AdController.show().then((result) => {
+                    // user watch ad till the end
+                    // your code to reward user
+					console.log("AD Completed: " + JSON.stringify(result));
+                    alert('Reward - ' + JSON.stringify(result) + " &&" + JSON.stringify(info));
+                }).catch((result) => {
+                    // user skipped video or get error during playing ad
+                    // do nothing or whatever you want
+					console.log("AD Fail: " + JSON.stringify(result));
+                    alert(JSON.stringify(result, null, 4));
+                })
+			}
+        </script>
     <div id="unity-container">
       <canvas id="unity-canvas" width=1080 height=2160 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
@@ -34,12 +65,12 @@
       <div id="unity-warning"> </div>
     </div>
 	<script> 
-	var version = "1.0.1.11"; // Define the version
+	var version = "1.0.1.12"; // Define the version
     var script = document.createElement('script');
     script.src = "index.js?v=" + version; // Append version to the script src
     document.body.appendChild(script); // Add the script to the body
 	</script>
-    <!-- <script src="index.js?v=" + "1.0.1.11"></script> -->
+    <!-- <script src="index.js?v=" + "1.0.1.12"></script> -->
     
 	<!-- <script src="load-sdk.js"></script> -->
 	<!-- <script src="tracking.js"></script> -->
@@ -51,22 +82,6 @@
 		  isTelegramContext: false, // use false, if a website is not in Telegram Web App context
 	  });
 	</script>
-        <script>
-            // insert your block id
-            const AdControllerButton = window.Adsgram.init({ blockId: "3931" });
-            const button = document.getElementById('ad');
-            button.addEventListener('click', () => {
-                AdControllerButton.show().then((result) => {
-                    // user watch ad till the end
-                    // your code to reward user
-                    alert('Reward');
-                }).catch((result) => {
-                    // user skipped video or get error during playing ad
-                    // do nothing or whatever you want
-                    alert(JSON.stringify(result, null, 4));
-                })
-            })
-        </script>
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PCVJ0R9PRF"></script>
 	<script>
