@@ -93,7 +93,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "Cat Lucky",
     productName: "CatLucky",
-    productVersion: "1.0.1.12",
+    productVersion: "1.0.1.14",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -382,7 +382,7 @@ function showADMega(type)
 			{
 				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
 			}
-			alert('Reward - ' + JSON.stringify(result) + " &&" + JSON.stringify(data));
+			//alert('Reward - ' + JSON.stringify(result) + " &&" + JSON.stringify(data));
 		}).catch((result) => {
 			// user get error during playing ad or skip ad
 			// do nothing or whatever you want
@@ -404,19 +404,20 @@ function showADBanner(type)
 	  var data = JSON.parse(type);
 	  //console.log("TUK data" + data.blockId);
 	  //console.log("TUK data type" + data.type);
-	  const BannerAdController = window.Adsgram.init({ blockId: data.blockId, debug: false, debugBannerType: "FullscreenMedia" });
+	  const BannerAdController = await window.Adsgram.init({ blockId: data.blockId, debug: false, debugBannerType: "FullscreenMedia" });
 	  if(BannerAdController)
 	  {
 		  BannerAdController.show().then((result) => {
 			// user watch ad till the end
 			// your code to reward user
 			//console.log("ADr" + result);
-			telemetreeTrackingStr("ADGram-Success|" + data.type);
+			
 			console.log("AD Completed: " + JSON.stringify(result));
 			if(unityInstanceRef)
 			{
 				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
 			}
+			telemetreeTrackingStr("ADGram-Success|" + data.type);
 			}).catch((result) => {
 				// user get error during playing ad or skip ad
 				// do nothing or whatever you want
@@ -434,19 +435,20 @@ function showADBanner(type)
 	  var data = JSON.parse(type);
 	  //console.log("TUK data" + data.blockId);
 	  //console.log("TUK data type" + data.type);
-	  const BannerAdController = window.Adsgram.init({ blockId: data.blockId, debug: false, debugBannerType: "RewardedVideo" });
+	  const BannerAdController = await window.Adsgram.init({ blockId: data.blockId, debug: false, debugBannerType: "RewardedVideo" });
 	  if(BannerAdController)
 	  {
 		  BannerAdController.show().then((result) => {
 			// user watch ad till the end
 			// your code to reward user
 			//console.log("ADr" + result);
-			telemetreeTrackingStr("ADGram-Success|" + data.type);
+			
 			console.log("AD Completed: " + JSON.stringify(result));
 			if(unityInstanceRef)
 			{
 				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
 			}
+			telemetreeTrackingStr("ADGram-Success|" + data.type);
 			}).catch((result) => {
 				// user get error during playing ad or skip ad
 				// do nothing or whatever you want
