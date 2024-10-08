@@ -93,7 +93,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "Cat Lucky",
     productName: "CatLucky",
-    productVersion: "1.0.1.14",
+    productVersion: "1.0.1.15",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -399,7 +399,7 @@ function showADMega(type)
 	}
 }
 
-function showADBanner(type)
+async function showADBanner(type)
   {
 	  var data = JSON.parse(type);
 	  //console.log("TUK data" + data.blockId);
@@ -430,7 +430,7 @@ function showADBanner(type)
 	  }
   }
   
-  function showADReward(type)
+  async function showADReward(type)
   {
 	  var data = JSON.parse(type);
 	  //console.log("TUK data" + data.blockId);

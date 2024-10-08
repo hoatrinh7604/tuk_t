@@ -1,4 +1,4 @@
-const cacheName = "Cat Lucky-CatLucky-1.0.1.14";
+const cacheName = "Cat Lucky-CatLucky-1.0.1.15";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
