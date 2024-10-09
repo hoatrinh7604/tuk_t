@@ -93,7 +93,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.13.23",
+    productVersion: "1.0.13.24",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -421,6 +421,14 @@ async function showADBanner(type)
 		  })
 	  }
   }
+  
+  // Param
+  function getLaunchParams()
+{
+	var launchParams = JSON.stringify(window.Telegram.WebApp);
+	//console.log('launchParams = ', launchParams);
+	return launchParams;
+}
   
   // Tracking
   function telemetreeTrackingStr(data)
