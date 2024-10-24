@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.1";
+const cacheName = "DefaultCompany-CatChallenge-0.0.1";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -8,6 +8,8 @@ const contentToCache = [
     "index.js",
 	"index.html",
     "load-sdk.js",
+    "ads.js",
+    "tracking.js"
 ];
 
 // self.addEventListener('install', function(event) {
@@ -108,6 +110,12 @@ self.addEventListener("fetch", function (event) {
     // })()
   // );
   
+  // Only cache if it is game content data
+  if (!isStaticResource(event.request))
+  {
+	  return null;
+  }
+  
   //new
   if (event.request.method === 'POST') {
     // Always fetch from the network for POST requests
@@ -152,6 +160,10 @@ self.addEventListener('message', function(event) {
     }
 });
 
+// Helper function to check if the request is for static resources
+function isStaticResource(request) {
+  return contentToCache.some((resource) => request.url.includes(resource));
+}
 // Inform clients about the new version
 // self.addEventListener('activate', event => {
     // event.waitUntil(
