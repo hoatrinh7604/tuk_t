@@ -1,4 +1,4 @@
-const cacheName = "DefaultCompany-CatChallenge-1.0.1.2";
+const cacheName = "DefaultCompany-CatChallenge-1.0.1.3";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
