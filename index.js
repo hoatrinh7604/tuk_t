@@ -91,9 +91,9 @@
     frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
     codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "DefaultCompany",
-    productName: "CatChallenge",
-    productVersion: "1.0.1.3",
+    companyName: "CatB",
+    productName: "Cat Battle",
+    productVersion: "1.0.15.6",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -110,6 +110,7 @@
 
   render();
 
+  canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
 
   var script = document.createElement("script");
@@ -445,4 +446,19 @@ async function showADBanner(type)
 		  var trackingData = JSON.parse(data);
 		  telemetreeBuilder.track(trackingData.t, trackingData.e);
 	  }
+  }
+  
+  function getTelegramID()
+  {
+	  const tg = window.Telegram.WebApp;
+
+            // Check if user data is available
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                const userId = tg.initDataUnsafe.user.id;
+				return userId;
+                //document.getElementById("userId").textContent = `User ID: ${userId}`;
+            } else {
+                //document.getElementById("userId").textContent = "User ID not available.";
+				return "";
+            }
   }
