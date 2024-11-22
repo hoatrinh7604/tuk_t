@@ -91,9 +91,9 @@
     frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
     codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "CatB",
-    productName: "Cat Battle",
-    productVersion: "1.0.18.6",
+    companyName: "DefaultCompany",
+    productName: "CatChallenge",
+    productVersion: "1.0.2.8",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -447,6 +447,7 @@ async function showADBanner(type)
 		  telemetreeBuilder.track(trackingData.t, trackingData.e);
 	  }
   }
+
   
   function getTelegramID()
   {
