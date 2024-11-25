@@ -1,6 +1,6 @@
 {
-    "name": "CatLucky",
-    "short_name": "CatLucky",
+    "name": "Cat Battle",
+    "short_name": "Cat Battle",
     "start_url": "index.html",
     "display": "fullscreen",
     "background_color": "#FFFFFF",
