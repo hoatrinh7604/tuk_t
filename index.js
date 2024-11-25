@@ -85,15 +85,15 @@
         }, 5000); 
 
   var buildUrl = "Build";
-  var loaderUrl = buildUrl + "/WebGL.loader.js" + "?v=" + new Date().getTime();
+  var loaderUrl = buildUrl + "/WebGL.loader.js";
   var config = {
-    dataUrl: buildUrl + "/WebGL.data.unityweb" + "?v=" + new Date().getTime(),
-    frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb" + "?v=" + new Date().getTime(),
-    codeUrl: buildUrl + "/WebGL.wasm.unityweb" + "?v=" + new Date().getTime(),
+    dataUrl: buildUrl + "/WebGL.data.unityweb",
+    frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
+    codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.18.23.5",
+    productVersion: "1.0.18.23.6",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
