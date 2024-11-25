@@ -1,4 +1,4 @@
-const cacheName = "DefaultCompany-CatChallenge-1.0.2.26";
+const cacheName = "CatB-Cat Battle-1.0.18.23.4";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -26,7 +26,7 @@ const contentToCache = [
 
 self.addEventListener("install", function (e) {
   console.log("[Service Worker] Install cacheName=" + cacheName);
-  //self.skipWaiting();  // Activate worker immediately
+  self.skipWaiting();  // Activate worker immediately
   e.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -86,29 +86,11 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener("fetch", function (event) {
-	// console.log("[Service Worker] Install cacheName=" + cacheName);
-  // e.respondWith(
-    // (async function () {
-      // let response = await caches.match(e.request);
-      // console.log(`[Service Worker] Fetching resource: ${e.request.url}`);
-      // if (response) {
-        // return response;
-      // }
-
-      // response = await fetch(e.request);
-      // const cache = await caches.open(cacheName);
-      // console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
-      // if(e.request.method !== "GET") {
-        // //return Promise.reject('no-match')
-        // return null;
-      // }
-	   // else
-	  // {
-		// cache.put(e.request, response.clone());
-	  // }
-      // return response;
-    // })()
-  // );
+	if (event.request.method !== 'GET') {
+		console.log(`[Service Worker] Skip caching resource: ${event.request.url}`);
+        // Skip caching for non-GET requests
+        return;
+    }
   
   // Only cache if it is game content data
   if (!isStaticResource(event.request))

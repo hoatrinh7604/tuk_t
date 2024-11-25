@@ -85,15 +85,15 @@
         }, 5000); 
 
   var buildUrl = "Build";
-  var loaderUrl = buildUrl + "/WebGL.loader.js";
+  var loaderUrl = buildUrl + "/WebGL.loader.js" + "?v=" + new Date().getTime();
   var config = {
-    dataUrl: buildUrl + "/WebGL.data.unityweb",
-    frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
-    codeUrl: buildUrl + "/WebGL.wasm.unityweb",
+    dataUrl: buildUrl + "/WebGL.data.unityweb" + "?v=" + new Date().getTime(),
+    frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb" + "?v=" + new Date().getTime(),
+    codeUrl: buildUrl + "/WebGL.wasm.unityweb" + "?v=" + new Date().getTime(),
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "DefaultCompany",
-    productName: "CatChallenge",
-    productVersion: "1.0.2.26",
+    companyName: "CatB",
+    productName: "Cat Battle",
+    productVersion: "1.0.18.23.4",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -122,7 +122,7 @@
 	  //Module.setStatus("Loading... " + Math.round(progress * 100) + "%");
     }).then((unityInstance) => {
       unityInstanceRef = unityInstance;
-	  stopLoadingLoop();
+	  //stopLoadingLoop();
 	  //Module.setStatus("Loading complete!");
 	  //document.getElementById('loadingText').style.display = 'none';
       loadingBar.style.display = "none";
@@ -190,7 +190,22 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('ServiceWorker.js')
         .then(function(registration) {
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
-
+			// Force the service worker to check for updates immediately
+			registration.update();
+			
+			registration.onupdatefound = () => {
+				const newWorker = registration.installing;
+				newWorker.onstatechange = () => {
+					if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+						// Notify user about the new version
+						console.log("New version available. Please refresh the page.");
+						// Optionally, reload the page to apply the update
+						location.reload();
+					}
+				};
+			};
+			
+			/* Old
             registration.addEventListener('updatefound', function() {
                 const newWorker = registration.installing;
 
@@ -205,6 +220,7 @@ if ('serviceWorker' in navigator) {
                     }
                 });
             });
+			*/
         }).catch(function(error) {
             console.log('ServiceWorker registration failed: ', error);
         });
@@ -447,7 +463,6 @@ async function showADBanner(type)
 		  telemetreeBuilder.track(trackingData.t, trackingData.e);
 	  }
   }
-
   
   function getTelegramID()
   {
@@ -462,4 +477,10 @@ async function showADBanner(type)
                 //document.getElementById("userId").textContent = "User ID not available.";
 				return "";
             }
+  }
+  
+  function openLink(data)
+  {
+	  console.log('openLink = ', data);
+	  Telegram?.WebApp?.openLink(data);
   }

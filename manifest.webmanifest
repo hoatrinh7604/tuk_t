@@ -1,11 +1,11 @@
 {
-    "name": "CatChallenge",
-    "short_name": "CatChallenge",
+    "name": "Cat Battle",
+    "short_name": "Cat Battle",
     "start_url": "index.html",
     "display": "fullscreen",
     "background_color": "#FFFFFF",
     "theme_color": "#000",
-    "description": Des,
+    "description": "",
     "icons": [{
       "src": "TemplateData/icons/unity-logo-dark.png",
       "sizes": "144x144",
