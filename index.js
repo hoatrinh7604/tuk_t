@@ -30,28 +30,6 @@
     }
     updateBannerVisibility();
   }
-  
-  var Module = {
-        setStatus: function (text) {
-            if (!Module.loadingText) {
-                Module.loadingText = document.getElementById('loadingText');
-            }
-            if (text) {
-                Module.loadingText.innerHTML = text;
-            }
-        },
-        monitorRunDependencies: function (left) {
-            var totalDependencies = Module.expectedDependencies || 0;
-            Module.expectedDependencies = Math.max(totalDependencies, left);
-            var percentComplete = Math.round((totalDependencies - left) / totalDependencies * 100);
-            Module.setStatus("Loading... " + percentComplete + "%");
-
-            // Remove the loading text when loading is complete
-            if (left === 0) {
-                document.getElementById('loadingText').style.display = 'none';
-            }
-        }
-    };
 	
 	// loading
 	var progress = 0;  // Simulate progress for testing
@@ -80,9 +58,9 @@
         startLoadingLoop();
 
         // Simulate Unity's loading completion (for testing purposes)
-        setTimeout(() => {
-            progress = 100;
-        }, 5000); 
+        // setTimeout(() => {
+            // progress = 100;
+        // }, 5000); 
 
   var buildUrl = "Build";
   var loaderUrl = buildUrl + "/WebGL.loader.js";
@@ -93,7 +71,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.18.23.6",
+    productVersion: "1.0.18.23.24",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -113,24 +91,26 @@
   canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
 
-  var script = document.createElement("script");
-  script.src = loaderUrl;
-  script.onload = () => {
-    createUnityInstance(canvas, config, (progress) => {
-      //progressBarFull.style.width = 100 * progress + "%";
-	  setPercentage(100 * progress);
-	  //Module.setStatus("Loading... " + Math.round(progress * 100) + "%");
-    }).then((unityInstance) => {
-      unityInstanceRef = unityInstance;
-	  //stopLoadingLoop();
-	  //Module.setStatus("Loading complete!");
-	  //document.getElementById('loadingText').style.display = 'none';
-      loadingBar.style.display = "none";
-    }).catch((message) => {
-      alert(message);
-    });
-  };
-  document.body.appendChild(script);
+	async function startUnity() {
+        var script = document.createElement("script");
+		  script.src = loaderUrl;
+		  script.onload = () => {
+			createUnityInstance(canvas, config, (progress) => {
+			  //progressBarFull.style.width = 100 * progress + "%";
+			  setPercentage(100 * progress);
+			  //Module.setStatus("Loading... " + Math.round(progress * 100) + "%");
+			}).then((unityInstance) => {
+			  unityInstanceRef = unityInstance;
+			  //stopLoadingLoop();
+			  //Module.setStatus("Loading complete!");
+			  //document.getElementById('loadingText').style.display = 'none';
+			  loadingBar.style.display = "none";
+			}).catch((message) => {
+			  alert(message);
+			});
+		  };
+		  document.body.appendChild(script);
+	}
   
   // Resize
   function render() {
@@ -190,6 +170,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('ServiceWorker.js')
         .then(function(registration) {
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
+		
 			// Force the service worker to check for updates immediately
 			registration.update();
 			
@@ -205,35 +186,40 @@ if ('serviceWorker' in navigator) {
 				};
 			};
 			
-			/* Old
-            registration.addEventListener('updatefound', function() {
-                const newWorker = registration.installing;
+			// // Listen for messages from the Service Worker
+			// navigator.serviceWorker.addEventListener('message', event => {
+				// if (event.data === 'serviceWorkerReady') {
+					// console.log("Service Worker ready. Starting Unity...");
+					// startUnity(); // Begin Unity loading
+				// }
+			// });
+			// Wait for the Service Worker to be ready
+			return navigator.serviceWorker.ready;
+		}).then(registration => {
+			console.log("Service Worker is ready and controlling the page.");
 
-                newWorker.addEventListener('statechange', function() {
-                    if (newWorker.state === 'installed') {
-                        if (navigator.serviceWorker.controller) {
-                            // New content is available, inform the user
-                            notifyUserAboutUpdate();
-							//console.log('ServiceWorker Update!!!');
-							//ForceReload();
-                        }
-                    }
-                });
-            });
-			*/
-        }).catch(function(error) {
-            console.log('ServiceWorker registration failed: ', error);
+			// Send the message to check if caching is complete
+			if (registration.active) {
+				registration.active.postMessage('isCachingComplete');
+			}
+
+			// Listen for the Service Worker's response
+			navigator.serviceWorker.addEventListener('message', event => {
+				if (event.data === 'cachingComplete') {
+					console.log("Caching is complete. Starting Unity...");
+					unityReady = true; // Flag Unity as ready to load
+					startUnity(); // Begin Unity loading
+				}
+			});
+		}).catch(function(error) {
+            console.error("Service Worker registration failed:", error);
+			startUnity(); // Fallback to load Unity immediately
         });
-
-    // Listening for messages from the Service Worker
-    navigator.serviceWorker.addEventListener('message', function(event) {
-        if (event.data === 'newVersionAvailable') {
-            notifyUserAboutUpdate();
-			//console.log('ServiceWorker Update 1!!!');
-			//ForceReload();
-        }
-    });
 }
+else {
+            console.warn("Service Workers are not supported.");
+            startUnity(); // Fallback to load Unity immediately
+        }
 
 function notifyUserAboutUpdate() {
     alertAndForceUserAboutUpdate();
