@@ -67,7 +67,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "Cat Lucky",
     productName: "CatLucky",
-    productVersion: "1.0.2.12",
+    productVersion: "1.0.2.14",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
