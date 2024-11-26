@@ -67,7 +67,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "Cat Lucky",
     productName: "CatLucky",
-    productVersion: "1.0.2.6",
+    productVersion: "1.0.2.8",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -86,7 +86,7 @@
 
   canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
-
+	var isChangeText = false;
 	async function startUnity() {
         var script = document.createElement("script");
 		  script.src = loaderUrl;
@@ -330,13 +330,6 @@ function sendTelegramPayment(botToken, providerToken, chatId, amount, currency) 
     });
 }
 
-function getLaunchParams()
-{
-	var launchParams = JSON.stringify(window.Telegram.WebApp);
-	//console.log('launchParams = ', launchParams);
-	return launchParams;
-}
-
 function openInvoice(invoice_url)
 {
 	// Open the invoice
@@ -468,6 +461,14 @@ async function showADBanner(type)
 		  })
 	  }
   }
+  
+  // Param
+  function getLaunchParams()
+{
+	var launchParams = JSON.stringify(window.Telegram.WebApp);
+	//console.log('launchParams = ', launchParams);
+	return launchParams;
+}
   
   // Tracking
   function telemetreeTrackingStr(data)
