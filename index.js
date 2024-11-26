@@ -42,16 +42,12 @@
                 document.getElementById('dots').innerHTML = '.'.repeat(dotCount);
                 
                 // Simulate increasing progress (remove this in the actual project)
-                progress += 1;
-                if (progress >= 100) {
-                    stopLoadingLoop();
-                }
+                //progress += 1;
             }, 500);  // Update every 500ms
         }
         
         function stopLoadingLoop() {
             clearInterval(loadingInterval);
-            document.getElementById('loadingText').innerHTML = "Loading complete!";
         }
         
         // Call this function to start the loading loop
@@ -69,9 +65,9 @@
     frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
     codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "CatB",
-    productName: "Cat Battle",
-    productVersion: "1.0.18.24",
+    companyName: "Cat Lucky",
+    productName: "CatLucky",
+    productVersion: "1.0.2.6",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -95,9 +91,16 @@
         var script = document.createElement("script");
 		  script.src = loaderUrl;
 		  script.onload = () => {
-			createUnityInstance(canvas, config, (progress) => {
+			createUnityInstance(canvas, config, (progressUnity) => {
 			  //progressBarFull.style.width = 100 * progress + "%";
-			  setPercentage(100 * progress);
+			  progress = 100 * progressUnity;
+			  setPercentage(progress);
+			  console.log("Progress=" + progress);
+			  if(progress >= 80 && isChangeText == false)
+			  {
+				  isChangeText = true;
+				  document.getElementById('loadingText').innerHTML = 'Loading data<span id="dots">.</span>';
+			  }
 			  //Module.setStatus("Loading... " + Math.round(progress * 100) + "%");
 			}).then((unityInstance) => {
 			  unityInstanceRef = unityInstance;
@@ -105,7 +108,9 @@
 			  //Module.setStatus("Loading complete!");
 			  //document.getElementById('loadingText').style.display = 'none';
 			  loadingBar.style.display = "none";
+			  stopLoadingLoop();
 			}).catch((message) => {
+			  stopLoadingLoop();
 			  alert(message);
 			});
 		  };
@@ -325,6 +330,13 @@ function sendTelegramPayment(botToken, providerToken, chatId, amount, currency) 
     });
 }
 
+function getLaunchParams()
+{
+	var launchParams = JSON.stringify(window.Telegram.WebApp);
+	//console.log('launchParams = ', launchParams);
+	return launchParams;
+}
+
 function openInvoice(invoice_url)
 {
 	// Open the invoice
@@ -362,6 +374,39 @@ function isSupportStarPurchase()
 }
 
 // Ads
+var AdController;
+const AdController3 = window.Adsgram.init({ blockId: "3963" });
+
+function showADMega(type)
+{
+	var data = JSON.parse(type);
+	if(AdController3 != null)
+	{
+		AdController3.show().then((result) => {
+			// user watch ad till the end
+			// your code to reward user
+			console.log("AD Completed: " + JSON.stringify(result));
+			if(unityInstanceRef)
+			{
+				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
+			}
+			//alert('Reward - ' + JSON.stringify(result) + " &&" + JSON.stringify(data));
+		}).catch((result) => {
+			// user get error during playing ad or skip ad
+			// do nothing or whatever you want
+			console.log("AD Failed: " + JSON.stringify(result));
+			if(unityInstanceRef)
+				{
+					unityInstanceRef.SendMessage("MegaADHandler", "OnLoadFail", JSON.stringify(data.type));
+				}
+		})
+	}
+	else
+	{
+		console.log("AD Failed!!!");
+	}
+}
+
 async function showADBanner(type)
   {
 	  var data = JSON.parse(type);
@@ -423,14 +468,6 @@ async function showADBanner(type)
 		  })
 	  }
   }
-  
-  // Param
-  function getLaunchParams()
-{
-	var launchParams = JSON.stringify(window.Telegram.WebApp);
-	//console.log('launchParams = ', launchParams);
-	return launchParams;
-}
   
   // Tracking
   function telemetreeTrackingStr(data)
