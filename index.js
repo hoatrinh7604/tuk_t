@@ -65,9 +65,9 @@
     frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
     codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "Cat Lucky",
-    productName: "CatLucky",
-    productVersion: "1.0.2.14",
+    companyName: "DefaultCompany",
+    productName: "SandBlock",
+    productVersion: "1.0.0",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -84,9 +84,8 @@
 
   render();
 
-  canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
-	var isChangeText = false;
+var isChangeText = false;
 	async function startUnity() {
         var script = document.createElement("script");
 		  script.src = loaderUrl;
@@ -367,39 +366,6 @@ function isSupportStarPurchase()
 }
 
 // Ads
-var AdController;
-const AdController3 = window.Adsgram.init({ blockId: "3963" });
-
-function showADMega(type)
-{
-	var data = JSON.parse(type);
-	if(AdController3 != null)
-	{
-		AdController3.show().then((result) => {
-			// user watch ad till the end
-			// your code to reward user
-			console.log("AD Completed: " + JSON.stringify(result));
-			if(unityInstanceRef)
-			{
-				unityInstanceRef.SendMessage("MegaADHandler", "OnRewardCompleted", JSON.stringify(data.type));
-			}
-			//alert('Reward - ' + JSON.stringify(result) + " &&" + JSON.stringify(data));
-		}).catch((result) => {
-			// user get error during playing ad or skip ad
-			// do nothing or whatever you want
-			console.log("AD Failed: " + JSON.stringify(result));
-			if(unityInstanceRef)
-				{
-					unityInstanceRef.SendMessage("MegaADHandler", "OnLoadFail", JSON.stringify(data.type));
-				}
-		})
-	}
-	else
-	{
-		console.log("AD Failed!!!");
-	}
-}
-
 async function showADBanner(type)
   {
 	  var data = JSON.parse(type);
