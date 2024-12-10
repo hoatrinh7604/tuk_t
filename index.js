@@ -499,3 +499,31 @@ async function showADBanner(type)
 	  console.log('openLink = ', data);
 	  Telegram?.WebApp?.openLink(data);
   }
+
+// ---------------------------- Sol --------------------------
+
+function GetSOLAccount() {
+		if(solPlugin)
+		{
+			console.log("SOL key: " + solPlugin.getPublicKey());
+			return solPlugin.getPublicKey();
+		}
+		else
+		{
+			return "";
+		}
+      //document.getElementById("showGetAccount").innerHTML = plugin.getPublicKey();
+    }
+	
+async function GetSOLBalance() {
+      const balance = await  plugin.getBalance();
+	  console.log("SOL balance: " + balance);
+	  return balance;
+      //document.getElementById("showGetBalance").innerHTML = balance;
+    }
+
+async function SOLPurchase(userId, itemId, price) {
+      //const result = await plugin.purchaseItem("test-user-id", "test-item-id", "0,1");
+      const result = await plugin.purchaseItem(userId, itemId, price);
+      console.log("SOL Purchase: " + result);
+    }
