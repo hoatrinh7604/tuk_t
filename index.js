@@ -36,6 +36,7 @@
 	var fakeProgress = 0;  // Simulate progress for testing
         var dotCount = 1;
         var loadingInterval;
+		var inPreparingState = false;
         
         function startLoadingLoop() {
             loadingInterval = setInterval(() => {
@@ -53,7 +54,12 @@
 					if(fakeProgress >= 80)
 					{
 						fakeProgress = 80;
-						document.getElementById('loadingText').innerHTML = 'Preparing data<span id="dots">.</span>';
+						if(!inPreparingState)
+						{
+							document.getElementById('loadingText').innerHTML = 'Preparing data<span id="dots">.</span>';
+						}
+						
+						inPreparingState = true;
 					}
 					
 					setPercentage(fakeProgress);
