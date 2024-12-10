@@ -43,7 +43,7 @@
                 document.getElementById('dots').innerHTML = '.'.repeat(dotCount);
                 
                 // Simulate increasing progress (remove this in the actual project)
-                fakeProgress += 5;
+                fakeProgress += 3;
 				if(progress < 80)
 				{
 					if(fakeProgress < progress)
@@ -58,7 +58,7 @@
 					
 					setPercentage(fakeProgress);
 				}
-            }, 500);  // Update every 500ms
+            }, 200);  // Update every 200ms
         }
         
         function stopLoadingLoop() {
