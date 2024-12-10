@@ -43,7 +43,7 @@
                 document.getElementById('dots').innerHTML = '.'.repeat(dotCount);
                 
                 // Simulate increasing progress (remove this in the actual project)
-                fakeProgress += 1;
+                fakeProgress += 5;
 				if(progress < 80)
 				{
 					if(fakeProgress < progress)
@@ -53,6 +53,7 @@
 					if(fakeProgress >= 80)
 					{
 						fakeProgress = 80;
+						document.getElementById('loadingText').innerHTML = 'Preparing data<span id="dots">.</span>';
 					}
 					
 					setPercentage(fakeProgress);
