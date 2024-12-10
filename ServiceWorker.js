@@ -1,4 +1,4 @@
-const cacheName = "DefaultCompany-SandBlock-1.0.0";
+const cacheName = "CatB-Cat Battle-1.0.18.28";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",

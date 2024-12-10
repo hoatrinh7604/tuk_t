@@ -33,6 +33,7 @@
 	
 	// loading
 	var progress = 0;  // Simulate progress for testing
+	var fakeProgress = 0;  // Simulate progress for testing
         var dotCount = 1;
         var loadingInterval;
         
@@ -42,7 +43,20 @@
                 document.getElementById('dots').innerHTML = '.'.repeat(dotCount);
                 
                 // Simulate increasing progress (remove this in the actual project)
-                //progress += 1;
+                fakeProgress += 1;
+				if(progress < 80)
+				{
+					if(fakeProgress < progress)
+					{
+						fakeProgress = progress;
+					}
+					if(fakeProgress >= 80)
+					{
+						fakeProgress = 80;
+					}
+					
+					setPercentage(fakeProgress);
+				}
             }, 500);  // Update every 500ms
         }
         
@@ -65,9 +79,9 @@
     frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
     codeUrl: buildUrl + "/WebGL.wasm.unityweb",
     streamingAssetsUrl: "StreamingAssets",
-    companyName: "DefaultCompany",
-    productName: "SandBlock",
-    productVersion: "1.0.0",
+    companyName: "CatB",
+    productName: "Cat Battle",
+    productVersion: "1.0.18.28",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -84,6 +98,7 @@
 
   render();
 
+  canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
 var isChangeText = false;
 	async function startUnity() {
@@ -93,8 +108,11 @@ var isChangeText = false;
 			createUnityInstance(canvas, config, (progressUnity) => {
 			  //progressBarFull.style.width = 100 * progress + "%";
 			  progress = 100 * progressUnity;
-			  setPercentage(progress);
-			  console.log("Progress=" + progress);
+			  if(progress > fakeProgress)
+			  {
+				setPercentage(progress);
+			  }
+			  //console.log("Progress=" + progress);
 			  if(progress >= 80 && isChangeText == false)
 			  {
 				  isChangeText = true;
