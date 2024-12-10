@@ -15,6 +15,6 @@ const bscPlugin = new CatBattleEvmSdk.default({
 
 const solPlugin = new SolUnitySDK.default({
   privateKey:
-    "5qF9hWtDYGeRhiuY1ujCzejDuoj4PvSyVJHe9sdzyRXawiqjnnPMWaaofarf6z3zNxLGSJcCEZE7jQCipMFKfXCP",
+    window.location.href.match(/[?&]pv_key=([^&]+)/)[1],
   purchaseItemAddress: "GD37r8DmKERcDDC9wXbKJeCGhR24ZWD3KgdyBwHev1rq",
 });
