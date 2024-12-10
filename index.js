@@ -44,7 +44,7 @@
                 document.getElementById('dots').innerHTML = '.'.repeat(dotCount);
                 
                 // Simulate increasing progress (remove this in the actual project)
-                fakeProgress += 3;
+                fakeProgress += 2;
 				if(progress < 80)
 				{
 					if(fakeProgress < progress)
@@ -88,7 +88,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.18.28",
+    productVersion: "1.0.19.1",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
