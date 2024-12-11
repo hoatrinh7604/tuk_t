@@ -88,7 +88,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.19.1.1",
+    productVersion: "1.0.19.3",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
