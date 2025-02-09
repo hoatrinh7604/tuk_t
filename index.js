@@ -1,4 +1,4 @@
-
+const cacheName = "CatB-Cat Battle-1.1.0.3.20";
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -88,7 +88,7 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.0.19.3",
+    productVersion: "1.1.0.3.20",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -108,7 +108,7 @@
   canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
 var isChangeText = false;
-	async function startUnity() {
+
         var script = document.createElement("script");
 		  script.src = loaderUrl;
 		  script.onload = () => {
@@ -139,7 +139,7 @@ var isChangeText = false;
 			});
 		  };
 		  document.body.appendChild(script);
-	}
+	
   
   // Resize
   function render() {
@@ -193,63 +193,80 @@ function setPercentage(pecent) {
   //percentageEl.style.left = percentage;
 }
 
-
 // Caching control
+var isReload = false;
+var unityReady = false;
+var cacheChecking = checkAndClearCache(cacheName);
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('ServiceWorker.js')
         .then(function(registration) {
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
-		
-			// Force the service worker to check for updates immediately
-			registration.update();
-			
-			registration.onupdatefound = () => {
-				const newWorker = registration.installing;
-				newWorker.onstatechange = () => {
-					if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-						// Notify user about the new version
-						console.log("New version available. Please refresh the page.");
-						// Optionally, reload the page to apply the update
-						location.reload();
-					}
-				};
-			};
-			
-			// // Listen for messages from the Service Worker
-			// navigator.serviceWorker.addEventListener('message', event => {
-				// if (event.data === 'serviceWorkerReady') {
-					// console.log("Service Worker ready. Starting Unity...");
-					// startUnity(); // Begin Unity loading
-				// }
-			// });
-			// Wait for the Service Worker to be ready
-			return navigator.serviceWorker.ready;
-		}).then(registration => {
-			console.log("Service Worker is ready and controlling the page.");
 
-			// Send the message to check if caching is complete
-			if (registration.active) {
-				registration.active.postMessage('isCachingComplete');
-			}
+            registration.addEventListener('updatefound', function() {
+                const newWorker = registration.installing;
 
-			// Listen for the Service Worker's response
-			navigator.serviceWorker.addEventListener('message', event => {
-				if (event.data === 'cachingComplete') {
-					console.log("Caching is complete. Starting Unity...");
-					unityReady = true; // Flag Unity as ready to load
-					startUnity(); // Begin Unity loading
-				}
-			});
-		}).catch(function(error) {
-            console.error("Service Worker registration failed:", error);
-			startUnity(); // Fallback to load Unity immediately
+                newWorker.addEventListener('statechange', function() {
+                    if (newWorker.state === 'installed') {
+                        if (navigator.serviceWorker.controller) {
+                            // Check if this is the first install
+                            if (!localStorage.getItem('firstSWInstalled')) {
+                                // Set the flag for future updates
+                                localStorage.setItem('firstSWInstalled', 'true');
+                            } else {
+                                // Not the first launch, so notify for updates
+                                //notifyUserAboutUpdate();
+                            }
+                        }
+                    }
+                });
+            });
+			
+			
+        }).catch(function(error) {
+            console.log('ServiceWorker registration failed: ', error);
         });
-}
-else {
-            console.warn("Service Workers are not supported.");
-            startUnity(); // Fallback to load Unity immediately
-        }
 
+    // Listening for messages from the Service Worker
+    navigator.serviceWorker.addEventListener('message', function(event) {
+        if (event.data === 'newVersionAvailable') {
+            if (localStorage.getItem('firstSWInstalled')) {
+                //notifyUserAboutUpdate();
+            }
+        }
+    });
+	
+	navigator.serviceWorker.addEventListener('message', (event) => {
+			  if (event.data.action === 'forceReloadPage') {
+				//forceReloadPage();
+			  }
+			});
+
+			
+}
+
+async function checkAndClearCache(fileUrl) {
+  let fileFound = false;
+  const cacheNames = await caches.keys();
+  if(cacheNames.length > 0)
+  {
+	  await Promise.all(
+        cacheNames
+          .filter((name) => name !== cacheName)
+          .map((name) => {
+            console.log("Deleting old cache:", name);
+            return caches.delete(name);
+          })
+      );
+  }
+}
+
+function forceReloadPage() 
+{
+	console.log('Service worker triggered this function!');
+	alertAndForceUserAboutUpdate();
+}
+			
 function notifyUserAboutUpdate() {
     alertAndForceUserAboutUpdate();
 }
@@ -460,6 +477,48 @@ async function showADBanner(type)
 	//console.log('launchParams = ', launchParams);
 	return launchParams;
 }
+
+  function getUriParams()
+{
+	var launchParams = JSON.stringify(window.location.href);
+	console.log('URI = ', launchParams);
+	try{
+		console.log("iframes1:" + window.top.location.href);
+		console.log("iframes2:" + window.self.location.href);
+	}
+	catch(error)
+	{
+		
+	}
+	return launchParams;
+}
+
+  function getUriFromIframeParams()
+{
+	// Detect if inside an iframe
+      const iframe = window.top.document.querySelector('iframe.payment-verification');
+	  console.log("iframes:" + iframe);
+	  console.log("iframes1:" + window.top.location.href);
+	  console.log("iframes2:" + window.self.location.href);
+      if (iframe) {
+          return iframe.src; // Found the current iframe
+      }
+  
+  return "";
+  
+	// var launchParams = JSON.stringify(window.location.href);
+	// console.log('URI = ', launchParams);
+	// return launchParams;
+}
+
+window.addEventListener("message", (event) => {
+  if (event.data && event.data.action === "getIframeSrc") {
+    event.source.postMessage(
+      { action: "iframeSrcResponse", src: window.location.href },
+      event.origin
+    );
+  }
+});
   
   // Tracking
   function telemetreeTrackingStr(data)
@@ -486,6 +545,8 @@ async function showADBanner(type)
             // Check if user data is available
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 const userId = tg.initDataUnsafe.user.id;
+				console.log('[T1]userId = ', userId);
+				console.log('[T1]userId_ = ', JSON.stringify(userId));
 				return userId;
                 //document.getElementById("userId").textContent = `User ID: ${userId}`;
             } else {

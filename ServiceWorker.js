@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.0.19.3";
+const cacheName = "CatB-Cat Battle-1.1.0.3.20";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -13,51 +13,40 @@ const contentToCache = [
 ];
 
 self.addEventListener("install", function (e) {
-  console.log("[Service Worker] Install cacheName=" + cacheName);
-  
-  e.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => {
-            return name !== cacheName;
-          })
-          .map((name) => {
-            console.log("[Service Worker] Deleting old cache:", name);
-            return caches.delete(name);
-          })
-      );
-    })
-  );
-
-  e.waitUntil(
-    (async function () {
-      const cache = await caches.open(cacheName);
-      console.log("[Service Worker] Caching all: app shell and content");
-      await cache.addAll(contentToCache);
-	  console.log('Caching completed during install.');
-	  self.skipWaiting();  // Activate worker immediately
-    })()
-  );
-  
+	console.log("[Service Worker] Install cacheName=" + cacheName);
+	  e.waitUntil((async function () {
+		  const cache = await caches.open(cacheName);
+		  console.log('[Service Worker] Caching all: app shell and content');
+		  await cache.addAll(contentToCache);
+		  console.log('[Service Worker] Caching all: app shell and content DONE');
+		  self.skipWaiting(); // Activate service worker immediately
+		})());
 });
 
-self.addEventListener('activate', event => {
-	const currentCaches = [cacheName];
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
-    }).then(cachesToDelete => {
-      return Promise.all(cachesToDelete.map(cacheToDelete => {
-        return caches.delete(cacheToDelete);
-      }));
-    }).then(() => {
-		console.log('Service Worker is fully activated.');
-		})
-  );
+// self.addEventListener('activate', event => {
+	// const currentCaches = [cacheName];
+  // event.waitUntil(
+    // caches.keys().then(cacheNames => {
+      // return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
+    // }).then(cachesToDelete => {
+      // return Promise.all(cachesToDelete.map(cacheToDelete => {
+		   // console.log("[Service Worker] Deleting 1 old cache:", name);
+			// callFunctionInClient();
+        // return caches.delete(cacheToDelete);
+      // }));
+    // }).then(() => {
+		// console.log('Service Worker is fully activated.');
+		// })
+  // );
   
-  self.clients.claim(); // Take control of all pages immediately
-});
+  // self.clients.claim().then(() => {
+             // return self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
+                 // clients.forEach(client => {
+                     // client.postMessage('serviceWorkerReady'); // Notify main thread
+                 // });
+             // });
+         // })
+// });
 
 self.addEventListener("fetch", function (event) {
 	if (event.request.method !== 'GET') {
@@ -141,3 +130,23 @@ self.addEventListener('message', event => {
         event.source.postMessage('cachingComplete');
     }
 });
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    clients.matchAll().then(clients => {
+      if (clients && clients.length) {
+        clients[0].postMessage({ action: 'forceReloadPage' });
+      }
+    })
+  );
+});
+
+function callFunctionInClient() {
+	console.log('callFunctionInClient');
+  self.clients.matchAll().then((clients) => {
+    clients.forEach((client) => {
+		console.log('callFunctionInClient1');
+      client.postMessage('forceReloadPage');
+    });
+  });
+}
