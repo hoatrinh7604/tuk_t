@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.3.33";
+const cacheName = "CatB-Cat Battle-1.1.0.3.34";
 const contentToCache = [
     "Build/WebGL.loader.js",
     "Build/WebGL.framework.js.unityweb",
@@ -13,14 +13,48 @@ const contentToCache = [
 ];
 
 self.addEventListener("install", function (e) {
-	console.log("[Service Worker] Install cacheName=" + cacheName);
-	  e.waitUntil((async function () {
-		  const cache = await caches.open(cacheName);
-		  console.log('[Service Worker] Caching all: app shell and content');
-		  await cache.addAll(contentToCache);
-		  console.log('[Service Worker] Caching all: app shell and content DONE');
-		  self.skipWaiting(); // Activate service worker immediately
-		})());
+	//self.skipWaiting();  // Activate worker immediately
+  e.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((name) => {
+            return name !== cacheName;
+          })
+          .map((name) => {
+            console.log("[Service Worker] Deleting old cache:", name);
+            return caches.delete(name);
+          })
+      );
+    })
+  );
+
+  e.waitUntil(
+    (async function () {
+      const cache = await caches.open(cacheName);
+      console.log("[Service Worker] Caching all: app shell and content");
+      await cache.addAll(contentToCache);
+	  console.log('Caching completed during install.');
+	  self.skipWaiting();  // Activate worker immediately
+    })()
+  );
+});
+
+self.addEventListener('activate', event => {
+	const currentCaches = [cacheName];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
+    }).then(cachesToDelete => {
+      return Promise.all(cachesToDelete.map(cacheToDelete => {
+        return caches.delete(cacheToDelete);
+      }));
+    }).then(() => {
+		console.log('Service Worker is fully activated.');
+		})
+  );
+  
+  self.clients.claim(); // Take control of all pages immediately
 });
 
 // self.addEventListener('activate', event => {

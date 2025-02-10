@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.3.33";
+const cacheName = "CatB-Cat Battle-1.1.0.3.34";
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -88,7 +88,7 @@ const cacheName = "CatB-Cat Battle-1.1.0.3.33";
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.1.0.3.33",
+    productVersion: "1.1.0.3.34",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -225,12 +225,12 @@ if ('serviceWorker' in navigator) {
 			};
 			
 			// // Listen for messages from the Service Worker
-			 navigator.serviceWorker.addEventListener('message', event => {
-				 if (event.data === 'serviceWorkerReady') {
-					 console.log("Service Worker ready. Starting Unity...");
-					 startUnity(); // Begin Unity loading
-				 }
-			 });
+			 // navigator.serviceWorker.addEventListener('message', event => {
+				 // if (event.data === 'serviceWorkerReady') {
+					 // console.log("Service Worker ready. Starting Unity...");
+					 // startUnity(); // Begin Unity loading
+				 // }
+			 // });
 			 
 			     // Listening for messages from the Service Worker
 			navigator.serviceWorker.addEventListener('message', function(event) {
