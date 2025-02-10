@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.3.34";
+const cacheName = "CatB-Cat Battle-1.1.0.2.1";
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -88,7 +88,7 @@ const cacheName = "CatB-Cat Battle-1.1.0.3.34";
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.1.0.3.34",
+    productVersion: "1.1.0.2.1",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
