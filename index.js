@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.2.1";
+const cacheName = "CatB-Cat Battle-1.1.0.2.1.2";
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -88,7 +88,7 @@ const cacheName = "CatB-Cat Battle-1.1.0.2.1";
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.1.0.2.1",
+    productVersion: "1.1.0.2.1.2",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -270,19 +270,18 @@ else {
 
 
 async function checkAndClearCache(fileUrl) {
-  let fileFound = false;
-  const cacheNames = await caches.keys();
-  if(cacheNames.length > 0)
-  {
-	  await Promise.all(
+  await caches.keys().then((cacheNames) => {
+      return Promise.all(
         cacheNames
-          .filter((name) => name !== cacheName)
+          .filter((name) => {
+            return name !== cacheName;
+          })
           .map((name) => {
-            console.log("Deleting old cache:", name);
+            console.log("[Service Worker] Deleting old cache:", name);
             return caches.delete(name);
           })
       );
-  }
+    })
 }
 
 function forceReloadPage() 

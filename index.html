@@ -33,12 +33,34 @@
       <div id="unity-warning"> </div>
     </div>
 	<script> 
-	var version = "1.1.0.2.1"; // Define the version
+	var version = "1.1.0.2.1.2"; // Define the version
     var script = document.createElement('script');
     script.src = "index.js?v=" + version; // Append version to the script src
     document.body.appendChild(script); // Add the script to the body
+	
+	// Update Unity WebGL build file URLs
+        function applyVersioningToUnityFiles() {
+            const unityFiles = [
+                "Build/WebGL.data.unityweb",
+                "Build/WebGL.framework.js",
+                "Build/WebGL.wasm.unityweb",
+                "Build/WebGL.loader.js"
+            ];
+
+            unityFiles.forEach(filePath => {
+                const scriptElement = document.querySelector(`script[src*="${filePath}"]`);
+                if (scriptElement) {
+                    const versionedPath = `${filePath}?v=${version}`;
+                    scriptElement.src = versionedPath;
+                    console.log(`Updated file to: ${versionedPath}`);
+                }
+            });
+        }
+
+        // Apply versioning after the DOM is loaded
+        document.addEventListener("DOMContentLoaded", applyVersioningToUnityFiles);
 	</script>
-    <!-- <script src="index.js?v=" + "1.1.0.2.1"></script> -->
+    <!-- <script src="index.js?v=" + "1.1.0.2.1.2"></script> -->
 	<script src="load-sdk.js"></script>
 	<script src="tracking.js"></script>
 	<script src="ads.js"></script>
