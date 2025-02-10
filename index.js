@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.3.31";
+const cacheName = "CatB-Cat Battle-1.1.0.3.32";
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -88,7 +88,7 @@ const cacheName = "CatB-Cat Battle-1.1.0.3.31";
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.1.0.3.31",
+    productVersion: "1.1.0.3.32",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -267,7 +267,7 @@ else {
             console.warn("Service Workers are not supported.");
             startUnity(); // Fallback to load Unity immediately
         }
-}
+
 
 async function checkAndClearCache(fileUrl) {
   let fileFound = false;
