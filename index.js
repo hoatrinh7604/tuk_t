@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.3.28";
+const cacheName = "CatB-Cat Battle-1.1.0.3.29";
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -88,7 +88,7 @@ const cacheName = "CatB-Cat Battle-1.1.0.3.28";
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.1.0.3.28",
+    productVersion: "1.1.0.3.29",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -432,7 +432,10 @@ function openInvoice(invoice_url)
 	// Open the invoice
 	try
 	{
-		window.Telegram.WebApp.openInvoice(invoice_url);
+		if(window.Telegram)
+		{
+			window.Telegram.WebApp.openInvoice(invoice_url);
+		}
 	}
 	catch(error)
 	{
@@ -442,7 +445,7 @@ function openInvoice(invoice_url)
 	}
 }
 
-window.Telegram.WebView.onEvent('invoice_closed', onInvoiceCloseCustom);
+//window.Telegram.WebView.onEvent('invoice_closed', onInvoiceCloseCustom);
 
 function onInvoiceCloseCustom(eventType, eventData)
 {
@@ -529,9 +532,13 @@ async function showADBanner(type)
   // Param
   function getLaunchParams()
 {
-	var launchParams = JSON.stringify(window.Telegram.WebApp);
-	//console.log('launchParams = ', launchParams);
-	return launchParams;
+	if(window.Telegram)
+	{
+		var launchParams = JSON.stringify(window.Telegram.WebApp);
+		//console.log('launchParams = ', launchParams);
+		return launchParams;
+	}
+	return "";
 }
 
   function getUriParams()
@@ -596,6 +603,8 @@ window.addEventListener("message", (event) => {
   
   function getTelegramID()
   {
+	  if(window.Telegram)
+	  {
 	  const tg = window.Telegram.WebApp;
 
             // Check if user data is available
@@ -609,6 +618,8 @@ window.addEventListener("message", (event) => {
                 //document.getElementById("userId").textContent = "User ID not available.";
 				return "";
             }
+	  }
+	  return "";
   }
   
   function openLink(data)
