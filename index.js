@@ -1,4 +1,4 @@
-const cacheName = "CatB-Cat Battle-1.1.0.3.29";
+const cacheName = "CatB-Cat Battle-1.1.0.3.31";
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
@@ -88,7 +88,7 @@ const cacheName = "CatB-Cat Battle-1.1.0.3.29";
     streamingAssetsUrl: "StreamingAssets",
     companyName: "CatB",
     productName: "Cat Battle",
-    productVersion: "1.1.0.3.29",
+    productVersion: "1.1.0.3.31",
     showBanner: unityShowBanner,
 	cacheControl: function (url) {
   //return "immutable";
@@ -108,7 +108,9 @@ const cacheName = "CatB-Cat Battle-1.1.0.3.29";
   canvas.style.background = "url('" + buildUrl + "/WebGL.jpg') center / cover";
   loadingBar.style.display = "block";
 var isChangeText = false;
-	async function startUnity() {
+
+var cacheChecking = checkAndClearCache(cacheName);
+async function startUnity() {
         var script = document.createElement("script");
 		  script.src = loaderUrl;
 		  script.onload = () => {
@@ -139,7 +141,7 @@ var isChangeText = false;
 			});
 		  };
 		  document.body.appendChild(script);
-	}
+}
   
   // Resize
   function render() {
@@ -196,15 +198,8 @@ function setPercentage(pecent) {
 // Caching control
 var isReload = false;
 var unityReady = false;
-var cacheChecking = checkAndClearCache(cacheName);
 
-// Function to run before service worker
-async function runBeforeServiceWorker() {
-    console.log("Running function before service worker registration.");
-    // Your logic here
-	var controlCacheResult = await ControlCache();
-	
-	// Caching control
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('ServiceWorker.js')
         .then(function(registration) {
@@ -217,10 +212,14 @@ if ('serviceWorker' in navigator) {
 				const newWorker = registration.installing;
 				newWorker.onstatechange = () => {
 					if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-						// Notify user about the new version
-						console.log("New version available. Please refresh the page.");
-						// Optionally, reload the page to apply the update
-						notifyUserAboutUpdate();
+						// Check if this is the first install
+                            if (!localStorage.getItem('firstSWInstalled')) {
+                                // Set the flag for future updates
+                                localStorage.setItem('firstSWInstalled', 'true');
+                            } else {
+                                // Not the first launch, so notify for updates
+                                notifyUserAboutUpdate();
+                            }
 					}
 				};
 			};
@@ -232,6 +231,15 @@ if ('serviceWorker' in navigator) {
 					 startUnity(); // Begin Unity loading
 				 }
 			 });
+			 
+			     // Listening for messages from the Service Worker
+			navigator.serviceWorker.addEventListener('message', function(event) {
+				if (event.data === 'newVersionAvailable') {
+					if (localStorage.getItem('firstSWInstalled')) {
+						notifyUserAboutUpdate();
+					}
+				}
+			});
 			// Wait for the Service Worker to be ready
 			return navigator.serviceWorker.ready;
 		}).then(registration => {
@@ -259,46 +267,6 @@ else {
             console.warn("Service Workers are not supported.");
             startUnity(); // Fallback to load Unity immediately
         }
-}
-
-// Call the function first
-runBeforeServiceWorker();
-
-  async function ControlCache()
-  {
-	  caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => {
-            return name !== cacheName;
-          })
-          .map((name) => {
-            console.log("[Service Worker] Deleting old cache:", name);
-            return caches.delete(name);
-          })
-      );
-    })
-  }
-
-async function checkFileInCache(cacheName, fileName) {
-    try {
-        // Open the named cache
-        const cache = await caches.open(cacheName);
-
-        // Check if the file exists in the cache
-        const cachedResponse = await cache.match(fileName);
-
-        if (cachedResponse) {
-            console.log(`File "${fileName}" exists in the cache.`);
-            return true;
-        } else {
-            console.log(`File "${fileName}" does not exist in the cache.`);
-            return false;
-        }
-    } catch (error) {
-        console.error("Error checking cache:", error);
-        return false;
-    }
 }
 
 async function checkAndClearCache(fileUrl) {
